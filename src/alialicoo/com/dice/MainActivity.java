@@ -2,46 +2,79 @@ package alialicoo.com.dice;
 
 import java.util.ArrayList;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SlidingDrawer;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.SlidingDrawer.OnDrawerOpenListener;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-class getPhoneinfoTh extends Thread {
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		super.run();
-		PhoneInfo mph = new PhoneInfo();
-		mph.getPhoneInfoParams(Commdata.AppContext);
-	}
-}
-
-class readDBTh extends Thread {
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		super.run();
-		Commdata.copydbfile();
-		Commdata.read_dice_db();
-	}
-}
 
 public class MainActivity extends Activity {
+	
+	class getPhoneinfoTh extends Thread {
 
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			super.run();
+			PhoneInfo mph = new PhoneInfo();
+			mph.getPhoneInfoParams(Commdata.AppContext);
+		}
+	}
+
+	class readDBTh extends Thread {
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			super.run();
+			Commdata.copydbfile();
+			Commdata.read_dice_db();
+			handler.sendEmptyMessage(100);
+		}
+	}
+
+	Handler handler = new Handler() {
+
+	    public void handleMessage(Message msg) {
+	        super.handleMessage(msg);
+	        switch (msg.what) {
+	        case 100:
+	        	ini_ds();
+	        	break;
+	        
+	        }
+	    }
+	};
+	
 	SensorManager mSensorManager;// 声明一个SensorManager
 	Sensor accSensor = null;
-    dice_view_bean[] dices_view = new dice_view_bean[Commdata.maxdices];
+	SlidingDrawer sd = null;
+	GridView mgv = null;
+	dice_view_bean[] dices_view = new dice_view_bean[Commdata.maxdices];
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,23 +87,127 @@ public class MainActivity extends Activity {
 				.getSystemService(Context.SENSOR_SERVICE);
 		accSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
+	
 		Commdata.InitVolleyQueue();
 		Commdata.readSP();
 		getPhoneinfoTh gpth = new getPhoneinfoTh();
 		gpth.start();
+
+		Commdata.dices = new ArrayList<dice_bean2>();
+//		readDBTh rdbth = new readDBTh();
+//		rdbth.start();
 		
-		 Commdata.dices = new ArrayList<dice_bean2>();
-		readDBTh rdbth = new readDBTh();
-		rdbth.start();
-		 int i;
+		Commdata.copydbfile();
+		Commdata.read_dice_db();
+		  int i;
 	        int dicesize = (Commdata.screenHeight - 30) / 3;
 	        for (i = 0; i < Commdata.maxdices; i++) {
 	            dices_view[i] = new dice_view_bean();
 	            dices_view[i].dice_w = dicesize;
 	            dices_view[i].dice_h = dicesize;
 	        }
+		findViews();
+		ini_ds();
 	}
 
+	void ini_ds() {
+		int i;
+		for (i = 0; i < Commdata.maxdices; i++) {
+			dices_view[i].div.setVisibility(8);
+		}
+		if (Commdata.dices.size() > 0)
+			if (Commdata.dices.get(0) != null) {
+				dices_view[0].mbean2 = Commdata.dices.get(0);
+				dices_view[0].setRandoem(4);
+				dices_view[0].setdiceimage();
+			}
+	}
+
+	private void findViews() {
+		// main_ll = (LinearLayout) findViewById(R.id.main_ll);
+		// main_ll.setDrawingCacheEnabled(true);
+		// tplayout = (RelativeLayout) findViewById(R.id.tplayout);
+		// tplayout.setDrawingCacheEnabled(true);
+		// dplayout = (RelativeLayout) findViewById(R.id.dplayout);
+		mgv = (GridView) findViewById(R.id.dice_slist);
+		sd = (SlidingDrawer) findViewById(R.id.sd_dices);
+//		sd.open();
+		// helpbutton = (ImageButton) findViewById(R.id.helpbutton);
+		// camerashare = (ImageView) findViewById(R.id.camerashare);
+		// tableashare = (ImageView) findViewById(R.id.tableshare);
+		// mIV = (ImageView) findViewById(R.id.iv);
+		// mIV.setBackgroundResource(R.anim.dice_anim);
+		// animator = (AnimationDrawable) mIV.getBackground();
+		// mIV.setVisibility(8);
+		// usrerat = (RatingBar) findViewById(R.id.usrerat);
+		dices_view[0].div = (ImageView) findViewById(R.id.div1);
+		dices_view[1].div = (ImageView) findViewById(R.id.div2);
+		dices_view[2].div = (ImageView) findViewById(R.id.div3);
+		dices_view[3].div = (ImageView) findViewById(R.id.div4);
+		dices_view[4].div = (ImageView) findViewById(R.id.div5);
+		dices_view[5].div = (ImageView) findViewById(R.id.div6);
+		dices_view[6].div = (ImageView) findViewById(R.id.div7);
+		dices_view[7].div = (ImageView) findViewById(R.id.div8);
+		dices_view[8].div = (ImageView) findViewById(R.id.div9);
+		// mainmenu_btn = (ImageButton) findViewById(R.id.mainmenu_btn);
+		// addsc = (TextView) findViewById(R.id.addsc);
+		// Ad
+		setCommondListener();
+	}
+
+	private void setCommondListener() {
+		/*
+		 * dices_view[0].div.setOnLongClickListener(new Uilclicked());
+		 * dices_view[1].div.setOnLongClickListener(new Uilclicked());
+		 * dices_view[2].div.setOnLongClickListener(new Uilclicked());
+		 * dices_view[3].div.setOnLongClickListener(new Uilclicked());
+		 * dices_view[4].div.setOnLongClickListener(new Uilclicked());
+		 * dices_view[5].div.setOnLongClickListener(new Uilclicked());
+		 * dices_view[6].div.setOnLongClickListener(new Uilclicked());
+		 * dices_view[7].div.setOnLongClickListener(new Uilclicked());
+		 * dices_view[8].div.setOnLongClickListener(new Uilclicked());
+		 * 
+		 * dices_view[0].div.setOnClickListener(new UIclicked());
+		 * dices_view[1].div.setOnClickListener(new UIclicked());
+		 * dices_view[2].div.setOnClickListener(new UIclicked());
+		 * dices_view[3].div.setOnClickListener(new UIclicked());
+		 * dices_view[4].div.setOnClickListener(new UIclicked());
+		 * dices_view[5].div.setOnClickListener(new UIclicked());
+		 * dices_view[6].div.setOnClickListener(new UIclicked());
+		 * dices_view[7].div.setOnClickListener(new UIclicked());
+		 * dices_view[8].div.setOnClickListener(new UIclicked());
+		 * mgv.setOnItemClickListener(new OnItemClickListener() {
+		 * 
+		 * @Override public void onItemClick(AdapterView<?> arg0, View arg1, int
+		 * arg2, long arg3) { if (arg2 < Commdata.dices.size()) { adddice(arg2);
+		 * // showanim(); } else { Intent intent = new Intent(Dice.this,
+		 * Add_page.class); startActivity(intent);
+		 * overridePendingTransition(R.anim.activity_slide_r2l,
+		 * R.anim.activity_slide_l2r); } sd.close(); } });
+		 * 
+		 * mgv.setOnItemLongClickListener(new OnItemLongClickListener() {
+		 * 
+		 * @Override public boolean onItemLongClick(AdapterView<?> arg0, View
+		 * arg1, int arg2, long arg3) { // TODO Auto-generated method stub if
+		 * (arg2 < Commdata.dices.size()) { delseln = arg2; Intent intent = new
+		 * Intent(Dice.this, CMSGDlg.class); intent.putExtra("msg_id",
+		 * R.string.msg_give_up_the_dice); startActivityForResult(intent, 3); }
+		 * return false; } });
+		 * 
+		 * tplayout.setOnClickListener(new UIclicked());
+		 * helpbutton.setOnClickListener(new UIclicked()); //
+		 * camerashare.setOnClickListener(new UIclicked()); //
+		 * tableashare.setOnClickListener(new UIclicked());
+		 * sd.setOnDrawerOpenListener(new OnDrawerOpenListener() {
+		 * 
+		 * @Override public void onDrawerOpened() { // TODO Auto-generated
+		 * method stub mgv.startLayoutAnimation(); } });
+		 * mainmenu_btn.setOnClickListener(new UIclicked()); // Ad //
+		 * adviewbar.setOnClickListener(new adclick());
+		 */
+	}
+
+	/******************************************************************************/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
