@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
 import com.android.volley.Response.Listener;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -53,6 +54,22 @@ public class PhoneInfo {
 
 			getPhoneNetLocal(mc);
 
+			
+			
+			Listener<JSONObject> ml = new Listener<JSONObject>() {
+			public void onResponse(JSONObject arg0) {
+				try {
+					Log.d("log",arg0.toString());
+				
+				} catch (Exception e) {
+				}
+			}
+			
+			};
+			
+			JsonObjectRequest mys = new JsonObjectRequest(Method.POST, Commdata.user_log_addrs, mjo, ml, null);
+			Commdata.VolleyQueue.add(mys);
+			Commdata.VolleyQueue.start();
 			// getPhone_IDS
 			// TelephonyManager tm = (TelephonyManager)
 			// mc.getSystemService(Context.TELEPHONY_SERVICE);

@@ -36,13 +36,14 @@ public class Commdata {
 //    public static boolean canplay=true;
     public static boolean autocoveredflag=false;
     public final static String get_phone_loaction_servies_addr="http://j.maxmind.com/app/geoip.js";
-    public final static String svraddr="http://www.alialicoo.com/diceappsvr/";
+    public final static String svraddr="http://0.happydice.duapp.com/";
     public final static String pstaddr = svraddr+"android_pst.php";
     public final static String pstaddr_exit = svraddr+"android_dr.php";
     public final static String pstaddr_count = svraddr+"dc_rank_count.php";
     public final static String getaddr_userrat=svraddr+"getuserrat.php";
     public final static String getdc_downlist_addr=svraddr+"dc_dwnlist.php";
     public final static String update_addrs=svraddr+"dice_update.php";
+    public final static String user_log_addrs=svraddr+"input.php";
     public static String apkdownloadaddrs="";
      
     public static Location publiclm; 
