@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/tb01"
+    android:background="@color/green_main"
     tools:context=".MainActivity" >
 
     <!-- 3X3 显示 -->
@@ -95,6 +95,22 @@
     </RelativeLayout>
     <!-- 3X3 显示 -->
 
+<!--
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+   
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+      
+    </android.support.v4.widget.DrawerLayout>
+    
+     -->
 
     <!-- 抽屉 -->
 
