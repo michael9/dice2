@@ -95,7 +95,7 @@
     </RelativeLayout>
     <!-- 3X3 显示 -->
 
-<!--
+
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
@@ -110,7 +110,7 @@
       
     </android.support.v4.widget.DrawerLayout>
     
-     -->
+ 
 
     <!-- 抽屉 -->
 

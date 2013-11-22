@@ -25,7 +25,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
 
-
+import android.support.v4.widget.DrawerLayout;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
