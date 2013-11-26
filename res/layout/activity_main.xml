@@ -107,13 +107,49 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-      
+         <!-- The navigation drawer 
+         android:layout_gravity="start" 必须-->
+         
+         <LinearLayout 
+               android:layout_width="260dp"
+                android:layout_gravity="start"
+        android:layout_height="match_parent"
+        android:background="@color/green_light"
+         android:orientation="vertical" >
+            
+         <CheckBox
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="covered"
+             />
+         <CheckBox
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="sound"
+             />
+    
+         
+         
+          <GridView
+                        android:id="@+id/dice_slist"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:columnWidth="100px"
+                        android:gravity="center"
+                        android:horizontalSpacing="5px"
+                        android:layoutAnimation="@anim/layout_wave_scale"
+                        android:numColumns="4"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="35px" />
+    
+    
+       </LinearLayout>
     </android.support.v4.widget.DrawerLayout>
     
  
 
     <!-- 抽屉 -->
-
+    <!--
     <SlidingDrawer
         android:id="@+id/sd_dices"
         android:layout_width="match_parent"
@@ -170,6 +206,6 @@
                 android:src="@drawable/help_and_support" />
         </RelativeLayout>
     </SlidingDrawer>
-    <!-- 抽屉 -->
+ 抽屉 -->
 
 </RelativeLayout>
