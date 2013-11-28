@@ -1,6 +1,10 @@
 package alialicoo.com.dice;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
@@ -79,7 +83,9 @@ public class MainActivity extends Activity {
 	Sensor accSensor = null;
 	GridView mgv = null;
 	DrawerLayout dl = null;
+	RelativeLayout dplayout = null;
 	dice_view_bean[] dices_view = new dice_view_bean[Commdata.maxdices];
+	float lastx=0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +137,8 @@ public class MainActivity extends Activity {
 
 	private void findViews() {
 		dl = (DrawerLayout) findViewById(R.id.drawer_layout);
+		dplayout = (RelativeLayout) findViewById(R.id.dplayout);
+		dplayout.bringToFront();
 		mgv = (GridView) findViewById(R.id.dice_slist);
 
 		dices_view[0].div = (ImageView) findViewById(R.id.div1);
@@ -166,10 +174,50 @@ public class MainActivity extends Activity {
 		dices_view[6].div.setOnClickListener(new UIclicked());
 		dices_view[7].div.setOnClickListener(new UIclicked());
 		dices_view[8].div.setOnClickListener(new UIclicked());
+		
+		dplayout.setOnClickListener(new UIclicked());
+
+		dl.setDrawerListener(new DrawerListener() {
+
+			@Override
+			public void onDrawerStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				if (arg0 == 1) {
+					dl.bringToFront();
+				}
+			}
+
+			@Override
+			public void onDrawerSlide(View arg0, float arg1) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onDrawerOpened(View arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onDrawerClosed(View arg0) {
+				// TODO Auto-generated method stub
+				dplayout.bringToFront();
+			}
+		});
 
 		mgv.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(android.widget.AdapterView<?> arg0,
 					View arg1, int arg2, long arg3) {
+				if (arg2 < Commdata.dices.size()) {
+					adddice(arg2);
+				} else {
+					// Intent intent = new Intent(MainActivity.this,
+					// Add_page.class);
+					// startActivity(intent);
+					// overridePendingTransition(R.anim.activity_slide_r2l,
+					// R.anim.activity_slide_l2r);
+				}
 				dl.closeDrawers();
 			};
 		});
@@ -202,7 +250,50 @@ public class MainActivity extends Activity {
 		mgv.setAdapter(new ImageAdapter(this));
 	}
 
+	void adddice(int selected) {
+		int i = 0;
+		for (i = 0; i < Commdata.maxdices; i++) {
+			if (!dices_view[i].div.isShown()) {
+				dices_view[i].mbean2 = Commdata.dices.get(selected);
+				dices_view[i].setdiceimage();
+				return;
+			}
+		}
+	}
+	  void getRandoms() {
+	        int i = 0;
+	        for (i = 0; i < Commdata.maxdices; i++) {
+	            dices_view[i].setRandoem((int) (Math.random() * 123));
+	        }
+	    }
+	  
+	  protected void onResume() {
+		     super.onResume();
+		  mSensorManager.registerListener(lsn, accSensor, SensorManager.SENSOR_DELAY_NORMAL);
+	  };
+
+	  protected void onPause() {
+		   super.onPause();
+		   mSensorManager.unregisterListener(lsn, accSensor);
+	  };
+
 	/******************************************************************************/
+	  SensorEventListener lsn = new SensorEventListener() {
+	        @Override
+	        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+	        }
+
+	        @Override
+	        public void onSensorChanged(SensorEvent event) {
+	            // Log.d("onSensorChanged",""+event.values[SensorManager.DATA_X]+" "+event.values[SensorManager.DATA_Y]+" "+event.values[SensorManager.DATA_Z]);
+	            if (Math.abs(event.values[SensorManager.DATA_X] - lastx) > 6) {
+	            	getRandoms();
+//	                showanim();
+	            }
+	            lastx = event.values[SensorManager.DATA_X];
+	        }
+	    };
+	    
 	class Uilclicked implements OnLongClickListener {
 		@Override
 		public boolean onLongClick(View view) {
@@ -247,7 +338,8 @@ public class MainActivity extends Activity {
 	class UIclicked implements OnClickListener {
 		@Override
 		public void onClick(View v) {
-
+			getRandoms();
+			return;
 		}
 	};
 
