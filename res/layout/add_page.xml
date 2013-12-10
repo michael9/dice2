@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"    
+    android:orientation="vertical" 
+    android:id="@+id/add_page_main">
+<!-- 
+    <android.webkit.WebView
+        android:id="@+id/addwebView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="66dp"
+     />
+      -->
+   <ListView     
+       android:padding="3dp"
+       android:id="@+id/dslst"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:divider="@null"
+        android:background="@drawable/wb01"/>
+   
+</RelativeLayout>

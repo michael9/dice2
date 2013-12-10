@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 简体 -->
+<resources>
+
+    <string name="app_name">情趣骰子</string>
+    <string name="msg_download_the_dice">你确定下载该骰子？</string>
+    <string name="msg_get_the_dice">已经该骰子了放到包里了^_^！</string>
+    <string name="msg_had_the_dice">你已经有该骰子了！</string>
+    <string name="msg_give_up_the_dice">你确定丢弃该骰子?</string>
+    <string name="msg_pick_the_dice">请挑选骰子!</string>
+    <string name="msg_delete_default_dice">默认骰子请勿丢弃！</string>
+    <string name="msg_exit">休息一下了~</string>
+    <string name="ui_downloading_dice">获取骰子中...</string>
+    <string name="ui_logtitle">登录...</string>
+    <string name="ui_logusername">用戶名</string>
+    <string name="ui_logpasswords">密碼</string>
+    <string name="ui_loginbnt">登錄</string>
+    <string name="ui_logcancelbnt">取消</string>
+    <string name="ui_menu_camera">相机</string>
+    <string name="ui_menu_screenshot">屏幕截图</string>
+    <string name="ui_menu_covered">自动遮挡</string>
+    <string name="ui_coverlayout_open"> 开 </string>
+    <string name="ui_coverlayout_peek">瞄一眼</string>
+    <string name="notification_download_success">下载应用成功</string>
+	<string name="notification_download_failure">下载应用失败</string>
+
+</resources>

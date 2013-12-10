@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">dice2</string>
+     <string name="app_name">HappyDice</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+     <string name="msg_download_the_dice">Sure to get the Dice?</string>
+    <string name="msg_get_the_dice">^_^ Get the dice！</string>
+    <string name="msg_had_the_dice">Had the dice~!</string>
+    <string name="msg_give_up_the_dice">Give up the dice?</string>
+    <string name="msg_pick_the_dice">Hold less one dice!</string>
+    <string name="msg_delete_default_dice">Please not delete default dice!</string>
+    <string name="msg_exit">^_^See U!</string>
+    <string name="ui_downloading_dice">Loading dices...</string>
+    <string name="ui_logtitle">Log in...</string>
+    <string name="ui_logusername">UserName</string>
+    <string name="ui_logpasswords">PassWords</string>
+    <string name="ui_loginbnt">Log in</string>
+    <string name="ui_logcancelbnt">Cancel</string>
+    <string name="ui_menu_camera">Camera</string>
+    <string name="ui_menu_screenshot">Screen Shot</string>
+    <string name="ui_menu_covered">Auto Covered</string>
+    <string name="ui_coverlayout_open">Open</string>
+    <string name="ui_coverlayout_peek">Peek</string>
+	<string name="notification_download_success">DownloadAppSuccess</string>
+	<string name="notification_download_failure">DownloadAppFailure</string>
 
 </resources>
