@@ -212,11 +212,11 @@ public class MainActivity extends Activity {
 				if (arg2 < Commdata.dices.size()) {
 					adddice(arg2);
 				} else {
-					// Intent intent = new Intent(MainActivity.this,
-					// Add_page.class);
-					// startActivity(intent);
-					// overridePendingTransition(R.anim.activity_slide_r2l,
-					// R.anim.activity_slide_l2r);
+					 Intent intent = new Intent(MainActivity.this,
+					 Add_page.class);
+					 startActivity(intent);
+					 overridePendingTransition(R.anim.activity_slide_r2l,
+					 R.anim.activity_slide_l2r);
 				}
 				dl.closeDrawers();
 			};
