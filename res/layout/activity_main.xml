@@ -108,6 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:focusable="false" />
+        
 
         <!--
          The navigation drawer 
@@ -120,6 +121,7 @@
             android:layout_gravity="start"
             android:background="@color/green_light"
             android:orientation="vertical" >
+            
 
             <CheckBox
                 android:layout_width="match_parent"
@@ -130,6 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="sound" />
+            
 
             <GridView
                 android:id="@+id/dice_slist"
@@ -142,6 +145,8 @@
                 android:numColumns="3"
                 android:stretchMode="columnWidth"
                 android:verticalSpacing="30px" />
+            
+            
         </LinearLayout>
     </android.support.v4.widget.DrawerLayout>
 

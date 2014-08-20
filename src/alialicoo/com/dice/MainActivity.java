@@ -6,9 +6,13 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.umeng.analytics.game.UMGameAgent;
+import com.umeng.fb.FeedbackAgent;
+
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +26,7 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -43,16 +48,16 @@ import android.hardware.SensorManager;
 
 public class MainActivity extends Activity {
 
-	class getPhoneinfoTh extends Thread {
-
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			super.run();
-			PhoneInfo mph = new PhoneInfo();
-			mph.getPhoneInfoParams(Commdata.AppContext);
-		}
-	}
+//	class getPhoneinfoTh extends Thread {
+//
+//		@Override
+//		public void run() {
+//			// TODO Auto-generated method stub
+//			super.run();
+//			PhoneInfo mph = new PhoneInfo();
+//			mph.getPhoneInfoParams(Commdata.AppContext);
+//		}
+//	}
 
 	class readDBTh extends Thread {
 
@@ -100,8 +105,8 @@ public class MainActivity extends Activity {
 
 		Commdata.InitVolleyQueue();
 		Commdata.readSP();
-		getPhoneinfoTh gpth = new getPhoneinfoTh();
-		gpth.start();
+//		getPhoneinfoTh gpth = new getPhoneinfoTh();
+//		gpth.start();
 
 		Commdata.dices = new ArrayList<dice_bean2>();
 		// readDBTh rdbth = new readDBTh();
@@ -120,6 +125,9 @@ public class MainActivity extends Activity {
 		findViews();
 		ini_ds();
 		setgrid();
+		 
+		 UMGameAgent.setDebugMode(true);//设置输出运行时日志
+		 UMGameAgent.init( this );
 	}
 
 	void ini_ds() {
@@ -137,8 +145,10 @@ public class MainActivity extends Activity {
 
 	private void findViews() {
 		dl = (DrawerLayout) findViewById(R.id.drawer_layout);
+		dl.openDrawer(Gravity.LEFT);
+		dl.bringToFront();
 		dplayout = (RelativeLayout) findViewById(R.id.dplayout);
-		dplayout.bringToFront();
+//		dplayout.bringToFront();
 		mgv = (GridView) findViewById(R.id.dice_slist);
 
 		dices_view[0].div = (ImageView) findViewById(R.id.div1);
@@ -150,6 +160,7 @@ public class MainActivity extends Activity {
 		dices_view[6].div = (ImageView) findViewById(R.id.div7);
 		dices_view[7].div = (ImageView) findViewById(R.id.div8);
 		dices_view[8].div = (ImageView) findViewById(R.id.div9);
+		
 		setCommondListener();
 	}
 
@@ -270,11 +281,13 @@ public class MainActivity extends Activity {
 	  protected void onResume() {
 		     super.onResume();
 		  mSensorManager.registerListener(lsn, accSensor, SensorManager.SENSOR_DELAY_NORMAL);
+		  UMGameAgent.onResume(this);
 	  };
 
 	  protected void onPause() {
 		   super.onPause();
 		   mSensorManager.unregisterListener(lsn, accSensor);
+		   UMGameAgent.onPause(this);
 	  };
 
 	/******************************************************************************/
