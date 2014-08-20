@@ -13,6 +13,7 @@ import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.StringRequest;
 import com.umeng.analytics.game.UMGameAgent;
 import com.umeng.fb.FeedbackAgent;
+import com.umeng.update.UmengUpdateAgent;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
@@ -108,6 +109,9 @@ public class MainActivity extends Activity {
 				.getSystemService(Context.SENSOR_SERVICE);
 		accSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
+		Intent intent=new Intent(MainActivity.this, welcome.class);
+		this.startActivity(intent);
+		
 		Commdata.InitVolleyQueue();
 		Commdata.readSP();
 //		getPhoneinfoTh gpth = new getPhoneinfoTh();
@@ -130,8 +134,11 @@ public class MainActivity extends Activity {
 		findViews();
 		ini_ds();
 		setgrid();
+		
 		 UMGameAgent.setDebugMode(true);//设置输出运行时日志
 		 UMGameAgent.init( this );
+		 UmengUpdateAgent.update(this);
+		 UmengUpdateAgent.setUpdateOnlyWifi(true);
 	}
 
 	void ini_ds() {

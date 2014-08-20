@@ -40,13 +40,31 @@
               android:theme="@android:style/Theme.Black.NoTitleBar"/>
         <activity android:name="cn.domob.android.ads.DomobActivity" android:theme="@android:style/Theme.Translucent"></activity>
         
+         <activity android:name="alialicoo.com.dice.welcome"
+              android:screenOrientation="portrait"
+              android:theme="@android:style/Theme.Black.NoTitleBar"/>
+        
          <activity android:name="com.umeng.fb.ConversationActivity"
+             android:screenOrientation="portrait"
          android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name="com.umeng.fb.ContactActivity"
+            android:screenOrientation="portrait"
          android:theme="@android:style/Theme.NoTitleBar"/>
+        
+        <activity 
+    android:name="com.umeng.update.UpdateDialogActivity"
+    android:screenOrientation="portrait"
+    android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+</activity>
+    <service
+    android:name="com.umeng.update.net.DownloadingService"
+    android:process=":DownloadingService" >
+</service>
         
 <meta-data android:value="53f43f5afd98c5affb006868" android:name="UMENG_APPKEY"></meta-data>
 <meta-data android:value="google" android:name="UMENG_CHANNEL"/>
     </application>
+    
+
 
 </manifest>
