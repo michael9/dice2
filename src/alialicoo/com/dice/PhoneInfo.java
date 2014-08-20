@@ -113,7 +113,7 @@ public class PhoneInfo {
 			}
 		};
 		try {
-			StringRequest mys = new StringRequest(Method.POST,
+			StringRequest mys = new StringRequest(Method.GET,
 					Commdata.get_phone_loaction_servies_addr, ml2, null);
 			Commdata.VolleyQueue.add(mys);
 			Commdata.VolleyQueue.start();

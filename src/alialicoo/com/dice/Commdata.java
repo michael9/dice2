@@ -30,7 +30,6 @@ public class Commdata {
     public final static int maxdices = 9;
 
     public static long start;
-    
     public static boolean listflag=true;
     public static boolean refsdl=true;
 //    public static boolean canplay=true;
@@ -64,6 +63,8 @@ public class Commdata {
     public static List<dice_bean2> dices;
 
     public static String return_str;
+
+	public static String Locale_Country;
 
     
 

@@ -2,10 +2,15 @@ package alialicoo.com.dice;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
+import com.android.volley.Request.Method;
+import com.android.volley.Response.Listener;
+import com.android.volley.toolbox.StringRequest;
 import com.umeng.analytics.game.UMGameAgent;
 import com.umeng.fb.FeedbackAgent;
 
@@ -107,7 +112,7 @@ public class MainActivity extends Activity {
 		Commdata.readSP();
 //		getPhoneinfoTh gpth = new getPhoneinfoTh();
 //		gpth.start();
-
+		Commdata.Locale_Country=Locale.getDefault().getCountry();
 		Commdata.dices = new ArrayList<dice_bean2>();
 		// readDBTh rdbth = new readDBTh();
 		// rdbth.start();
@@ -125,7 +130,6 @@ public class MainActivity extends Activity {
 		findViews();
 		ini_ds();
 		setgrid();
-		 
 		 UMGameAgent.setDebugMode(true);//设置输出运行时日志
 		 UMGameAgent.init( this );
 	}
@@ -260,6 +264,8 @@ public class MainActivity extends Activity {
 		// Commdata.read_dice_db();
 		mgv.setAdapter(new ImageAdapter(this));
 	}
+	
+
 
 	void adddice(int selected) {
 		int i = 0;
