@@ -13,11 +13,23 @@ import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.StringRequest;
 import com.umeng.analytics.game.UMGameAgent;
 import com.umeng.fb.FeedbackAgent;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.facebook.controller.UMFacebookHandler;
+import com.umeng.socialize.facebook.controller.UMFacebookHandler.PostType;
+import com.umeng.socialize.media.QQShareContent;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.sso.UMQQSsoHandler;
+import com.umeng.socialize.sso.UMSsoHandler;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
+import com.umeng.socialize.yixin.controller.UMYXHandler;
 import com.umeng.update.UmengUpdateAgent;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
@@ -97,6 +109,10 @@ public class MainActivity extends Activity {
 	RelativeLayout dplayout = null;
 	dice_view_bean[] dices_view = new dice_view_bean[Commdata.maxdices];
 	float lastx=0;
+	Button share=null;
+	
+	final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +156,16 @@ public class MainActivity extends Activity {
 		 UmengUpdateAgent.update(this);
 		 UmengUpdateAgent.setUpdateOnlyWifi(true);
 	}
+	
+	@Override 
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    super.onActivityResult(requestCode, resultCode, data);
+	    /**使用SSO授权必须添加如下代码 */
+	    UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode) ;
+	    if(ssoHandler != null){
+	       ssoHandler.authorizeCallBack(requestCode, resultCode, data);
+	    }
+	}
 
 	void ini_ds() {
 		int i;
@@ -172,6 +198,9 @@ public class MainActivity extends Activity {
 		dices_view[7].div = (ImageView) findViewById(R.id.div8);
 		dices_view[8].div = (ImageView) findViewById(R.id.div9);
 		
+		share=(Button)findViewById(R.id.btn_share);
+		share.bringToFront();
+		
 		setCommondListener();
 	}
 
@@ -196,6 +225,58 @@ public class MainActivity extends Activity {
 		dices_view[6].div.setOnClickListener(new UIclicked());
 		dices_view[7].div.setOnClickListener(new UIclicked());
 		dices_view[8].div.setOnClickListener(new UIclicked());
+		
+		share.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mController.getConfig().removePlatform( SHARE_MEDIA.RENREN, SHARE_MEDIA.DOUBAN);
+				
+				// wx967daebe835fbeac是你在微信开发平台注册应用的AppID, 这里需要替换成你注册的AppID
+				String appID = "wx967daebe835fbeac";
+				// 添加微信平台
+				UMWXHandler wxHandler = new UMWXHandler(MainActivity.this,appID);
+				wxHandler.addToSocialSDK();
+				// 支持微信朋友圈
+				UMWXHandler wxCircleHandler = new UMWXHandler(MainActivity.this,appID);
+				wxCircleHandler.setToCircle(true);
+				wxCircleHandler.addToSocialSDK();
+				
+				UMFacebookHandler mFacebookHandler = new UMFacebookHandler(MainActivity.this,"facebook APP ID" ,PostType.PHOTO);
+				mFacebookHandler.addToSocialSDK();
+				
+				 // 添加易信平台,参数1为当前activity, 参数2为在易信开放平台申请到的app id
+				UMYXHandler yixinHandler = new UMYXHandler(MainActivity.this,
+				                "yxc0614e80c9304c11b0391514d09f13bf");
+				// 关闭分享时的等待Dialog
+				yixinHandler.enableLoadingDialog(false);
+				// 把易信添加到SDK中
+				yixinHandler.addToSocialSDK();
+
+				// 易信朋友圈平台,参数1为当前activity, 参数2为在易信开放平台申请到的app id
+				UMYXHandler yxCircleHandler = new UMYXHandler(MainActivity.this,
+				                "yxc0614e80c9304c11b0391514d09f13bf");
+				yxCircleHandler.setToCircle(true);
+				yxCircleHandler.addToSocialSDK();
+				
+				UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(MainActivity.this, "100424468",
+		                "c7394704798a158208a74ab60104f0ba");
+		qqSsoHandler.addToSocialSDK();  
+		QQShareContent qqShareContent = new QQShareContent();
+		qqShareContent.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能 -- QQ");
+		qqShareContent.setTitle("hello, title");
+		qqShareContent.setShareImage(new UMImage(MainActivity.this, R.drawable.icon));
+		qqShareContent.setTargetUrl("你的URL链接");
+		mController.setShareMedia(qqShareContent);
+				
+				mController.setShareContent("主题骰子邀请你试用");
+				mController.setShareMedia(new UMImage(MainActivity.this, "http://alialicoo.com/imgs/dice_card_img.jpg"));
+//				mController.setAppWebSite(SHARE_MEDIA.RENREN, "http://www.umeng.com/social");
+				  mController.openShare(MainActivity.this, false);
+				
+			}
+		});
 		
 		dplayout.setOnClickListener(new UIclicked());
 
