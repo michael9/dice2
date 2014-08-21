@@ -18,7 +18,7 @@ public class welcome extends Activity {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			switch (msg.what) {
-			case 101:
+			case 90:
 				welcome.this.finish();
 				break;
 
@@ -31,7 +31,7 @@ public class welcome extends Activity {
 		 n--;
 		 if(n==0)
 		 {
-			 handler.sendEmptyMessage(101);
+			 handler.sendEmptyMessage(90);
 		 }
 		}   
 		}; 

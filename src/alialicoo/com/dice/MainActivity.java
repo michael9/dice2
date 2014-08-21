@@ -3,6 +3,8 @@ package alialicoo.com.dice;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -97,6 +99,10 @@ public class MainActivity extends Activity {
 			case 100:
 				ini_ds();
 				break;
+			case 101:
+				if(dl.isDrawerOpen(R.id.drawer_layout))
+				 dl.closeDrawers();
+				break;
 
 			}
 		}
@@ -113,6 +119,12 @@ public class MainActivity extends Activity {
 	
 	final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
 	
+	Timer tt=new Timer();
+	TimerTask task = new TimerTask() {   
+		public void run() {   
+			 handler.sendEmptyMessage(101);
+		}   
+		}; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +167,8 @@ public class MainActivity extends Activity {
 		 UMGameAgent.init( this );
 		 UmengUpdateAgent.update(this);
 		 UmengUpdateAgent.setUpdateOnlyWifi(true);
+		 
+		 tt.schedule(task, 3580);
 	}
 	
 	@Override 
