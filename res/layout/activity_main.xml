@@ -5,7 +5,7 @@
     android:background="@color/green_main"
     tools:context=".MainActivity" >
     
-    <Button 
+      <Button 
         android:id="@+id/btn_share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,7 +13,36 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         />
-
+    
+    <RelativeLayout 
+        android:id="@+id/adlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:background="#aaf8f8ff"
+        android:layout_alignParentBottom="true">
+        
+        <RelativeLayout 
+        android:id="@+id/adbarlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        >
+        
+    	</RelativeLayout>
+    	
+    	 <ImageButton 
+    	     android:id="@+id/btn_ad_stop"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ad_stop"
+            android:scaleType="fitXY"
+            android:background="@android:color/transparent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"/>
+        
+    </RelativeLayout>
+    
     <!-- 3X3 显示 -->
 
     <RelativeLayout
@@ -24,6 +53,8 @@
         android:gravity="center"
         android:layout_margin="25dp"
         android:orientation="vertical" >
+        
+           
 
         <!-- 第一行 -->
 
@@ -105,6 +136,8 @@
             android:scaleType="fitCenter" />
     </RelativeLayout>
     <!-- 3X3 显示 -->
+    
+
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"

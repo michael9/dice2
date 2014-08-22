@@ -10,6 +10,8 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import cn.domob.android.ads.DomobAdView;
+
 import com.android.volley.Request.Method;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.StringRequest;
@@ -42,6 +44,7 @@ import android.content.Intent;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -65,6 +68,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+
+import com.google.android.gms.ads.*;
 
 public class MainActivity extends Activity {
 
@@ -116,6 +121,11 @@ public class MainActivity extends Activity {
 	dice_view_bean[] dices_view = new dice_view_bean[Commdata.maxdices];
 	float lastx=0;
 	Button share=null;
+	RelativeLayout adbarlayout=null;
+	RelativeLayout adlayout=null;
+	DomobAdView domobadview=null;
+	AdView adsence =null;
+	ImageButton adstop=null;
 	
 	final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
 	
@@ -212,8 +222,38 @@ public class MainActivity extends Activity {
 		dices_view[7].div = (ImageView) findViewById(R.id.div8);
 		dices_view[8].div = (ImageView) findViewById(R.id.div9);
 		
+		adstop=(ImageButton)findViewById(R.id.btn_ad_stop);
+		adstop.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				adlayout.setVisibility(8);
+			}
+		});
+		
+		adbarlayout=(RelativeLayout)findViewById(R.id.adbarlayout);
+		if(Commdata.Locale_Country.equalsIgnoreCase("CN"))
+		{
+		domobadview=new DomobAdView(MainActivity.this, "56OJyPi4uMGP+glSCv", "16TLww7lAchV2Y6bAE1X0o2s");
+		domobadview.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		adbarlayout.addView(domobadview);
+		}
+		else
+		{
+		adsence=new AdView(MainActivity.this);
+		adsence.setAdUnitId("ca-app-pub-5802156087930387/8738588757");
+		adsence.setAdSize(AdSize.BANNER);
+		adsence.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		adsence.loadAd(new AdRequest.Builder().build());
+		adbarlayout.addView(adsence);
+		}
+		
+		adlayout=(RelativeLayout)findViewById(R.id.adlayout);
+//		adlayout.bringToFront();
+		
 		share=(Button)findViewById(R.id.btn_share);
-		share.bringToFront();
+//		share.bringToFront();
 		
 		setCommondListener();
 	}
@@ -320,6 +360,8 @@ public class MainActivity extends Activity {
 			public void onDrawerClosed(View arg0) {
 				// TODO Auto-generated method stub
 				dplayout.bringToFront();
+				share.bringToFront();
+				adlayout.bringToFront();
 			}
 		});
 

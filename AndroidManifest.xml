@@ -8,7 +8,7 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
     
-        <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -38,6 +38,7 @@
         <activity android:name="alialicoo.com.dice.Add_page"
               android:screenOrientation="portrait"
               android:theme="@android:style/Theme.Black.NoTitleBar"/>
+        
         <activity android:name="cn.domob.android.ads.DomobActivity" android:theme="@android:style/Theme.Translucent"></activity>
         
          <activity android:name="alialicoo.com.dice.welcome"
@@ -107,7 +108,14 @@
    android:configChanges="keyboardHidden|orientation|screenSize"
    android:exported="true"
    android:screenOrientation="portrait" />
-    
+        
+        <activity  
+    android:name="com.google.android.gms.ads.AdActivity"  
+    android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>  
+        
+       
+       
+<meta-data  android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>    
 <meta-data android:value="53f43f5afd98c5affb006868" android:name="UMENG_APPKEY"></meta-data>
 <meta-data android:value="google" android:name="UMENG_CHANNEL"/>
     </application>
