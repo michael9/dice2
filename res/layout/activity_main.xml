@@ -17,7 +17,7 @@
     <RelativeLayout 
         android:id="@+id/adlayout"
         android:layout_width="wrap_content"
-        android:layout_height="70dp"
+        android:layout_height="58dp"
         android:background="#aaf8f8ff"
         android:layout_alignParentBottom="true">
         

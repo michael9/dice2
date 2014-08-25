@@ -45,12 +45,7 @@
               android:screenOrientation="portrait"
               android:theme="@android:style/Theme.Black.NoTitleBar"/>
         
-         <activity android:name="com.umeng.fb.ConversationActivity"
-             android:screenOrientation="portrait"
-         android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:name="com.umeng.fb.ContactActivity"
-            android:screenOrientation="portrait"
-         android:theme="@android:style/Theme.NoTitleBar"/>
+        
         
         <activity 
     android:name="com.umeng.update.UpdateDialogActivity"
@@ -62,53 +57,7 @@
     android:process=":DownloadingService" >
 </service>
     
-      <!--分享编辑页-->
-        <activity
-            android:name="com.umeng.socialize.view.ShareActivity"
-            android:configChanges="orientation|keyboard"
-            android:launchMode="singleTask"
-            android:noHistory="true"
-            android:theme="@style/Theme.UMDialog"
-            android:windowSoftInputMode="stateVisible|adjustResize" >
-        </activity>
-        <!-- ############ QQ空间和QQ SSO授权的Activity注册 ############ -->
-        <activity
-            android:name="com.tencent.tauth.AuthActivity"
-            android:launchMode="singleTask"
-            android:noHistory="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- 100424468，如果你使用的公用账号，则不需要修改；否则修改成你在QQ开放平台申请的 APP ID-->
-                <data android:scheme="tencent100424468" /> 
-            </intent-filter>
-        </activity>
-        <activity android:name="com.tencent.connect.common.AssistActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:screenOrientation="portrait">
-        </activity>
-        
-        <activity
-   android:name="alialicoo.com.dice.wxapi.WXEntryActivity"
-   android:theme="@android:style/Theme.Translucent.NoTitleBar"
-   android:configChanges="keyboardHidden|orientation|screenSize"
-   android:exported="true"
-   android:screenOrientation="portrait" />
-        
-        <!-- facebook相关 -->
-        <activity
-            android:name="com.facebook.LoginActivity"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-   android:name="alialicoo.com.dice.yxapi.YXEntryActivity"
-   android:theme="@android:style/Theme.Translucent.NoTitleBar"
-   android:configChanges="keyboardHidden|orientation|screenSize"
-   android:exported="true"
-   android:screenOrientation="portrait" />
-        
+      
         <activity  
     android:name="com.google.android.gms.ads.AdActivity"  
     android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>  

@@ -10,24 +10,14 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import cn.domob.android.ads.DomobAdEventListener;
 import cn.domob.android.ads.DomobAdView;
+import cn.domob.android.ads.DomobAdManager.ErrorCode;
 
 import com.android.volley.Request.Method;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.StringRequest;
 import com.umeng.analytics.game.UMGameAgent;
-import com.umeng.fb.FeedbackAgent;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.controller.UMServiceFactory;
-import com.umeng.socialize.controller.UMSocialService;
-import com.umeng.socialize.facebook.controller.UMFacebookHandler;
-import com.umeng.socialize.facebook.controller.UMFacebookHandler.PostType;
-import com.umeng.socialize.media.QQShareContent;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.sso.UMQQSsoHandler;
-import com.umeng.socialize.sso.UMSsoHandler;
-import com.umeng.socialize.weixin.controller.UMWXHandler;
-import com.umeng.socialize.yixin.controller.UMYXHandler;
 import com.umeng.update.UmengUpdateAgent;
 
 import android.graphics.drawable.AnimationDrawable;
@@ -129,8 +119,6 @@ public class MainActivity extends Activity {
 	AdView adsence =null;
 	ImageButton adstop=null;
 	
-	final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
-	
 	Timer tt=new Timer();
 	TimerTask task = new TimerTask() {   
 		public void run() {   
@@ -174,6 +162,7 @@ public class MainActivity extends Activity {
 		findViews();
 		ini_ds();
 		setgrid();
+		setadview();
 		
 		 UMGameAgent.setDebugMode(true);//设置输出运行时日志
 		 UMGameAgent.init( this );
@@ -186,11 +175,6 @@ public class MainActivity extends Activity {
 	@Override 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    super.onActivityResult(requestCode, resultCode, data);
-	    /**使用SSO授权必须添加如下代码 */
-	    UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode) ;
-	    if(ssoHandler != null){
-	       ssoHandler.authorizeCallBack(requestCode, resultCode, data);
-	    }
 	}
 
 	void ini_ds() {
@@ -204,6 +188,144 @@ public class MainActivity extends Activity {
 				dices_view[0].setRandoem(4);
 				dices_view[0].setdiceimage();
 			}
+	}
+	
+	private void setshare(){
+		/*
+		mController.getConfig().removePlatform( SHARE_MEDIA.RENREN, SHARE_MEDIA.DOUBAN);
+		
+		// wx967daebe835fbeac是你在微信开发平台注册应用的AppID, 这里需要替换成你注册的AppID
+		String appID = "wx967daebe835fbeac";
+		// 添加微信平台
+		UMWXHandler wxHandler = new UMWXHandler(MainActivity.this,appID);
+		wxHandler.addToSocialSDK();
+		// 支持微信朋友圈
+		UMWXHandler wxCircleHandler = new UMWXHandler(MainActivity.this,appID);
+		wxCircleHandler.setToCircle(true);
+		wxCircleHandler.addToSocialSDK();
+		
+		UMFacebookHandler mFacebookHandler = new UMFacebookHandler(MainActivity.this,"663674327062278" ,PostType.PHOTO);
+		
+		mFacebookHandler.addToSocialSDK();
+		
+		 // 添加易信平台,参数1为当前activity, 参数2为在易信开放平台申请到的app id
+		UMYXHandler yixinHandler = new UMYXHandler(MainActivity.this,
+		                "yxc0614e80c9304c11b0391514d09f13bf");
+		// 关闭分享时的等待Dialog
+		yixinHandler.enableLoadingDialog(false);
+		// 把易信添加到SDK中
+		yixinHandler.addToSocialSDK();
+
+		// 易信朋友圈平台,参数1为当前activity, 参数2为在易信开放平台申请到的app id
+		UMYXHandler yxCircleHandler = new UMYXHandler(MainActivity.this,
+		                "yxc0614e80c9304c11b0391514d09f13bf");
+		yxCircleHandler.setToCircle(true);
+		yxCircleHandler.addToSocialSDK();
+		
+		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(MainActivity.this, "100424468",
+                "c7394704798a158208a74ab60104f0ba");
+qqSsoHandler.addToSocialSDK();  
+QQShareContent qqShareContent = new QQShareContent();
+qqShareContent.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能 -- QQ");
+qqShareContent.setTitle("hello, title");
+qqShareContent.setShareImage(new UMImage(MainActivity.this, R.drawable.icon));
+qqShareContent.setTargetUrl("你的URL链接");
+mController.setShareMedia(qqShareContent);
+		
+		mController.setShareContent("主题骰子邀请你试用");
+		mController.setShareMedia(new UMImage(MainActivity.this, "http://alialicoo.com/imgs/dice_card_img.jpg"));
+//		mController.setAppWebSite(SHARE_MEDIA.RENREN, "http://www.umeng.com/social");
+		  mController.openShare(MainActivity.this, false);*/
+		
+		Intent intent = new Intent(Intent.ACTION_SEND); // 启动分享发送的属性
+		intent.setType("text/plain"); // 分享发送的数据类型
+		intent.putExtra(Intent.EXTRA_SUBJECT, "主题骰子 欢乐分享"); // 分享的主题
+		intent.putExtra(Intent.EXTRA_TEXT, "主题骰子 欢乐分享 赶快下载：http://alialicoo.com"); // 分享的内容
+		MainActivity.this.startActivity(Intent.createChooser(intent, "选择分享"));// 目标应用选择对话框的标题 
+	}
+	
+	
+	private void setadview(){
+		
+//		adlayout.bringToFront();
+		adlayout.setVisibility(View.GONE);
+		
+		ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+		NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+		if (mWifi.isConnected()) {
+			if(Commdata.Locale_Country.equalsIgnoreCase("CN"))
+			{
+			domobadview=new DomobAdView(MainActivity.this, "56OJyPi4uMGP+glSCv", "16TLww7lAchV2Y6bAE1X0o2s");
+			domobadview.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			domobadview.setAdEventListener(new DomobAdEventListener() {
+				
+				@Override
+				public void onDomobLeaveApplication(DomobAdView arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onDomobAdReturned(DomobAdView arg0) {
+					// TODO Auto-generated method stub
+					adlayout.setVisibility(View.VISIBLE);
+					return;
+				}
+				
+				@Override
+				public Context onDomobAdRequiresCurrentContext() {
+					// TODO Auto-generated method stub
+					return null;
+				}
+				
+				@Override
+				public void onDomobAdOverlayPresented(DomobAdView arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onDomobAdOverlayDismissed(DomobAdView arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onDomobAdFailed(DomobAdView arg0, ErrorCode arg1) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onDomobAdClicked(DomobAdView arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			adbarlayout.addView(domobadview);
+			}
+			else
+			{
+			adsence=new AdView(MainActivity.this);
+			adsence.setAdUnitId("ca-app-pub-5802156087930387/8738588757");
+			adsence.setAdSize(AdSize.BANNER);
+			adsence.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			adsence.loadAd(new AdRequest.Builder().build());
+			adsence.setAdListener(new AdListener() {
+				
+				@Override
+				public void onAdLoaded() {
+					// TODO Auto-generated method stub
+					super.onAdLoaded();
+					adlayout.setVisibility(View.VISIBLE);
+				}
+			});
+			adbarlayout.addView(adsence);
+			}
+			
+		}
+		
 	}
 
 	private void findViews() {
@@ -234,37 +356,9 @@ public class MainActivity extends Activity {
 			}
 		});
 		
+		//ad_view
 		adbarlayout=(RelativeLayout)findViewById(R.id.adbarlayout);
 		adlayout=(RelativeLayout)findViewById(R.id.adlayout);
-//		adlayout.bringToFront();
-		
-		ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-		NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-		if (mWifi.isConnected()) {
-			if(Commdata.Locale_Country.equalsIgnoreCase("CN"))
-			{
-			domobadview=new DomobAdView(MainActivity.this, "56OJyPi4uMGP+glSCv", "16TLww7lAchV2Y6bAE1X0o2s");
-			domobadview.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-			adbarlayout.addView(domobadview);
-			}
-			else
-			{
-			adsence=new AdView(MainActivity.this);
-			adsence.setAdUnitId("ca-app-pub-5802156087930387/8738588757");
-			adsence.setAdSize(AdSize.BANNER);
-			adsence.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-			adsence.loadAd(new AdRequest.Builder().build());
-			adbarlayout.addView(adsence);
-			}
-			adlayout.setVisibility(View.VISIBLE);
-		}
-		else
-		{
-			adlayout.setVisibility(View.GONE);
-		}
-		
-		
 	
 		
 		share=(Button)findViewById(R.id.btn_share);
@@ -300,50 +394,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				mController.getConfig().removePlatform( SHARE_MEDIA.RENREN, SHARE_MEDIA.DOUBAN);
-				
-				// wx967daebe835fbeac是你在微信开发平台注册应用的AppID, 这里需要替换成你注册的AppID
-				String appID = "wx967daebe835fbeac";
-				// 添加微信平台
-				UMWXHandler wxHandler = new UMWXHandler(MainActivity.this,appID);
-				wxHandler.addToSocialSDK();
-				// 支持微信朋友圈
-				UMWXHandler wxCircleHandler = new UMWXHandler(MainActivity.this,appID);
-				wxCircleHandler.setToCircle(true);
-				wxCircleHandler.addToSocialSDK();
-				
-				UMFacebookHandler mFacebookHandler = new UMFacebookHandler(MainActivity.this,"facebook APP ID" ,PostType.PHOTO);
-				mFacebookHandler.addToSocialSDK();
-				
-				 // 添加易信平台,参数1为当前activity, 参数2为在易信开放平台申请到的app id
-				UMYXHandler yixinHandler = new UMYXHandler(MainActivity.this,
-				                "yxc0614e80c9304c11b0391514d09f13bf");
-				// 关闭分享时的等待Dialog
-				yixinHandler.enableLoadingDialog(false);
-				// 把易信添加到SDK中
-				yixinHandler.addToSocialSDK();
-
-				// 易信朋友圈平台,参数1为当前activity, 参数2为在易信开放平台申请到的app id
-				UMYXHandler yxCircleHandler = new UMYXHandler(MainActivity.this,
-				                "yxc0614e80c9304c11b0391514d09f13bf");
-				yxCircleHandler.setToCircle(true);
-				yxCircleHandler.addToSocialSDK();
-				
-				UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(MainActivity.this, "100424468",
-		                "c7394704798a158208a74ab60104f0ba");
-		qqSsoHandler.addToSocialSDK();  
-		QQShareContent qqShareContent = new QQShareContent();
-		qqShareContent.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能 -- QQ");
-		qqShareContent.setTitle("hello, title");
-		qqShareContent.setShareImage(new UMImage(MainActivity.this, R.drawable.icon));
-		qqShareContent.setTargetUrl("你的URL链接");
-		mController.setShareMedia(qqShareContent);
-				
-				mController.setShareContent("主题骰子邀请你试用");
-				mController.setShareMedia(new UMImage(MainActivity.this, "http://alialicoo.com/imgs/dice_card_img.jpg"));
-//				mController.setAppWebSite(SHARE_MEDIA.RENREN, "http://www.umeng.com/social");
-				  mController.openShare(MainActivity.this, false);
-				
+				setshare();
 			}
 		});
 		
