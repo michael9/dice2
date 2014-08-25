@@ -33,6 +33,8 @@ import com.umeng.update.UmengUpdateAgent;
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.opengl.Visibility;
 import android.os.Bundle;
@@ -105,7 +107,7 @@ public class MainActivity extends Activity {
 				ini_ds();
 				break;
 			case 101:
-				if(dl.isDrawerOpen(R.id.drawer_layout))
+//				if(dl.isDrawerOpen(R.id.drawer_layout))
 				 dl.closeDrawers();
 				break;
 
@@ -150,7 +152,7 @@ public class MainActivity extends Activity {
 		Intent intent=new Intent(MainActivity.this, welcome.class);
 		this.startActivity(intent);
 		
-		Commdata.InitVolleyQueue();
+//		Commdata.InitVolleyQueue();
 		Commdata.readSP();
 //		getPhoneinfoTh gpth = new getPhoneinfoTh();
 //		gpth.start();
@@ -233,24 +235,37 @@ public class MainActivity extends Activity {
 		});
 		
 		adbarlayout=(RelativeLayout)findViewById(R.id.adbarlayout);
-		if(Commdata.Locale_Country.equalsIgnoreCase("CN"))
-		{
-		domobadview=new DomobAdView(MainActivity.this, "56OJyPi4uMGP+glSCv", "16TLww7lAchV2Y6bAE1X0o2s");
-		domobadview.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		adbarlayout.addView(domobadview);
+		adlayout=(RelativeLayout)findViewById(R.id.adlayout);
+//		adlayout.bringToFront();
+		
+		ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+		NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+		if (mWifi.isConnected()) {
+			if(Commdata.Locale_Country.equalsIgnoreCase("CN"))
+			{
+			domobadview=new DomobAdView(MainActivity.this, "56OJyPi4uMGP+glSCv", "16TLww7lAchV2Y6bAE1X0o2s");
+			domobadview.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			adbarlayout.addView(domobadview);
+			}
+			else
+			{
+			adsence=new AdView(MainActivity.this);
+			adsence.setAdUnitId("ca-app-pub-5802156087930387/8738588757");
+			adsence.setAdSize(AdSize.BANNER);
+			adsence.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			adsence.loadAd(new AdRequest.Builder().build());
+			adbarlayout.addView(adsence);
+			}
+			adlayout.setVisibility(View.VISIBLE);
 		}
 		else
 		{
-		adsence=new AdView(MainActivity.this);
-		adsence.setAdUnitId("ca-app-pub-5802156087930387/8738588757");
-		adsence.setAdSize(AdSize.BANNER);
-		adsence.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		adsence.loadAd(new AdRequest.Builder().build());
-		adbarlayout.addView(adsence);
+			adlayout.setVisibility(View.GONE);
 		}
 		
-		adlayout=(RelativeLayout)findViewById(R.id.adlayout);
-//		adlayout.bringToFront();
+		
+	
 		
 		share=(Button)findViewById(R.id.btn_share);
 //		share.bringToFront();

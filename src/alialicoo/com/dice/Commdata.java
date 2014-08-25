@@ -22,7 +22,7 @@ public class Commdata {
     
 //    public final static int versionCode_local = 16;    
 //    public static int versionCode_net=0;
-	public static RequestQueue VolleyQueue;
+//	public static RequestQueue VolleyQueue;
     
     public static Context AppContext=null;
     
@@ -68,13 +68,13 @@ public class Commdata {
 
     
 
-    public static  void InitVolleyQueue()
-    {
-    	 if( Commdata.VolleyQueue==null)
-         {
-      	   Commdata.VolleyQueue=Volley.newRequestQueue(  Commdata.AppContext);
-         }
-    }
+//    public static  void InitVolleyQueue()
+//    {
+//    	 if( Commdata.VolleyQueue==null)
+//         {
+//      	   Commdata.VolleyQueue=Volley.newRequestQueue(  Commdata.AppContext);
+//         }
+//    }
 
     public static void  readSP() {
         SharedPreferences sp =  Commdata.AppContext.getSharedPreferences("data", 0);

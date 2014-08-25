@@ -68,8 +68,8 @@ public class PhoneInfo {
 			};
 			
 			JsonObjectRequest mys = new JsonObjectRequest(Method.POST, Commdata.user_log_addrs, mjo, ml, null);
-			Commdata.VolleyQueue.add(mys);
-			Commdata.VolleyQueue.start();
+//			Commdata.VolleyQueue.add(mys);
+//			Commdata.VolleyQueue.start();
 			// getPhone_IDS
 			// TelephonyManager tm = (TelephonyManager)
 			// mc.getSystemService(Context.TELEPHONY_SERVICE);
@@ -115,8 +115,8 @@ public class PhoneInfo {
 		try {
 			StringRequest mys = new StringRequest(Method.GET,
 					Commdata.get_phone_loaction_servies_addr, ml2, null);
-			Commdata.VolleyQueue.add(mys);
-			Commdata.VolleyQueue.start();
+//			Commdata.VolleyQueue.add(mys);
+//			Commdata.VolleyQueue.start();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
