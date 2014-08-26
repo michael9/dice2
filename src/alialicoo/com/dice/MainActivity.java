@@ -20,6 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.umeng.analytics.game.UMGameAgent;
 import com.umeng.update.UmengUpdateAgent;
 
+import android.R.bool;
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -30,7 +31,9 @@ import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.view.Gravity;
@@ -97,9 +100,15 @@ public class MainActivity extends Activity {
 				ini_ds();
 				break;
 			case 101:
+				Randomsflag=false;
 //				if(dl.isDrawerOpen(R.id.drawer_layout))
 				 dl.closeDrawers();
 				break;
+				
+				case 102:
+					dice_anim_stop();
+					Randomsflag=false;
+					break;
 
 			}
 		}
@@ -115,9 +124,14 @@ public class MainActivity extends Activity {
 	Button share=null;
 	RelativeLayout adbarlayout=null;
 	RelativeLayout adlayout=null;
+	ImageView animview=null;
+	Vibrator vibrator=null;
+	Boolean Randomsflag=true;
+	
 	DomobAdView domobadview=null;
 	AdView adsence =null;
 	ImageButton adstop=null;
+	
 	
 	Timer tt=new Timer();
 	TimerTask task = new TimerTask() {   
@@ -125,6 +139,9 @@ public class MainActivity extends Activity {
 			 handler.sendEmptyMessage(101);
 		}   
 		}; 
+		
+		
+		 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +180,7 @@ public class MainActivity extends Activity {
 		ini_ds();
 		setgrid();
 		setadview();
+		vibrator=(Vibrator)getSystemService(Service.VIBRATOR_SERVICE);
 		
 		 UMGameAgent.setDebugMode(true);//设置输出运行时日志
 		 UMGameAgent.init( this );
@@ -188,6 +206,34 @@ public class MainActivity extends Activity {
 				dices_view[0].setRandoem(4);
 				dices_view[0].setdiceimage();
 			}
+	}
+	
+	private void dice_anim_start(){
+		dplayout.setVisibility(View.INVISIBLE);
+		animview.setVisibility(View.VISIBLE);
+		animview.bringToFront();
+		AnimationDrawable ad=(AnimationDrawable) animview.getDrawable(); 
+		ad.start();
+		Timer animtt=new Timer();
+		TimerTask animtask = new TimerTask() {   
+			public void run() {   
+				 handler.sendEmptyMessage(102);
+			}   
+			};
+		animtt.schedule(animtask, 800);
+	}
+	private void dice_anim_stop(){
+		
+		
+		AnimationDrawable ad=(AnimationDrawable) animview.getDrawable(); 
+		ad.stop();
+		animview.setVisibility(View.GONE);
+		vibrator.vibrate(new long[]{0,350,80,}, -1);
+		dplayout.setVisibility(View.VISIBLE);
+		int i = 0;
+        for (i = 0; i < Commdata.maxdices; i++) {
+            dices_view[i].setRandoem((int) (Math.random() * 123));
+        }
 	}
 	
 	private void setshare(){
@@ -346,6 +392,9 @@ mController.setShareMedia(qqShareContent);
 		dices_view[7].div = (ImageView) findViewById(R.id.div8);
 		dices_view[8].div = (ImageView) findViewById(R.id.div9);
 		
+		animview=(ImageView)findViewById(R.id.animview);
+		
+		
 		adstop=(ImageButton)findViewById(R.id.btn_ad_stop);
 		adstop.setOnClickListener(new OnClickListener() {
 			
@@ -488,10 +537,12 @@ mController.setShareMedia(qqShareContent);
 		}
 	}
 	  void getRandoms() {
-	        int i = 0;
-	        for (i = 0; i < Commdata.maxdices; i++) {
-	            dices_view[i].setRandoem((int) (Math.random() * 123));
-	        }
+		  if(!Randomsflag)
+		  {
+			  Randomsflag=true;
+		 dice_anim_start();
+	        
+		  }
 	    }
 	  
 	  protected void onResume() {
